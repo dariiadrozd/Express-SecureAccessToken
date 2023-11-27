@@ -13,4 +13,12 @@ async function createUser(name, surname, email, pwd) {
     return data
 }
 
-module.exports = { createUser }
+async function authUser(email, pwd) {
+    const user = await getUserByEmail(email)
+    if (user.length) throw new Error('user is not authorised')
+    const pwdUserHash = user[0].pwd
+    if (!(await bcrypt.compare(pwd, pwdUserHash))) throw new Error('Incorrect password')
+    return user
+}
+
+module.exports = { createUser, authUser }
