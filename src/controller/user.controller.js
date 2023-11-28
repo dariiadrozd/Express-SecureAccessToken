@@ -1,10 +1,11 @@
 const express = require('express');
 const { createUser, authUser } = require('../servise/user.servise')
-const buildResponse = require('../helper/buildResponse');
+const { buildResponse } = require('../helper/buildResponse');
+const { isValidUserData } = require('../helper/userValidation')
 
 const route = express.Router();
 
-route.post('/reg', async (req, res) => {
+route.post('/reg', isValidUserData, async (req, res) => {
     try {
         const { name, surname, email, pwd } = req.body
         const data = await createUser(name, surname, email, pwd);
@@ -14,7 +15,7 @@ route.post('/reg', async (req, res) => {
     }
 })
 
-route.post('/auth', async (req, res) => {
+route.post('/auth', isValidUserData, async (req, res) => {
     try {
         const { email, pwd } = req.body
         const data = await authUser(email, pwd)

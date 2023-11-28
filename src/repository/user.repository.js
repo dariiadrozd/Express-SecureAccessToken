@@ -20,8 +20,8 @@ async function getUserByEmail(email) {
     const client = await pool.connect();
     try {
         await client.query('BEGIN')
-        const sql1 = ` select * from users where email = $1`
-        const result = (await client.query(sql1,[email])).rows
+        const sql = ` select * from users where email = $1`
+        const result = (await client.query(sql,[email])).rows
         await client.query('COMMIT')
         return result 
     }catch(error){
